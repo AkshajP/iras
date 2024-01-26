@@ -1,9 +1,7 @@
 "use client";
 import supabase from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import rvlogo from "../../assets/rvlogo.png";
+import { useState } from "react";
 import {
   FormControl,
   FormLabel,
@@ -14,26 +12,16 @@ import {
   Container,
   StackDivider,
   Box,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-  Center,
-  Heading,
 } from "@chakra-ui/react";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const [error, setError] = useState<any>(null);
 
   const router = useRouter();
 
   const handleSignIn = async (event: any) => {
     event.preventDefault();
-    setLoading(true);
     console.log(email, password);
 
     // Sign in with Supabase
@@ -46,8 +34,6 @@ export default function Login() {
 
     if (error) {
       console.error("Error signing in:", error.message);
-      setError(error.message);
-      setLoading(false);
       // Handle error appropriately (e.g., show an error message to the user)
       return;
     }
@@ -76,59 +62,28 @@ export default function Login() {
       // User is a teacher
       localStorage.setItem("userRole", "teacher");
       localStorage.setItem("userData", JSON.stringify(teacherData));
-      setLoading(false);
       router.push("/teacher");
     } else if (studentData) {
       // User is a student
       localStorage.setItem("userRole", "student");
       localStorage.setItem("userData", JSON.stringify(studentData));
-      setLoading(false);
       router.push("/student");
     } else if (adminData) {
       // User is an admin
       localStorage.setItem("userRole", "admin");
       localStorage.setItem("userData", JSON.stringify(adminData));
-      setLoading(false);
       router.push("/admin");
     } else {
       // User not found in any table
-
-      setError("User not found");
-      setLoading(false);
-      localStorage.clear();
+      console.error("User not found in any table");
     }
   };
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const user = JSON.parse(localStorage.getItem("userData") || "{}");
-
-      if (user.priority === 1) {
-        router.push("/student");
-      } else if (user.priority === 2) {
-        router.push("/teacher");
-      } else if (user.priority === 3) {
-        router.push("/admin");
-      } else {
-        router.push("/auth/login");
-      }
-    }
-  });
 
   return (
     <>
       <Container width="400px">
         <VStack divider={<StackDivider />} spacing={5} align="stretch">
-          <Box h="30vh">
-            <Center>
-              <Image src={rvlogo} width={150} alt="logo" height={150} />
-            </Center>
-            <Center>
-              <Heading as="h1" size="4xl">
-                IRAS
-              </Heading>
-            </Center>
-          </Box>
+          <Box h="30vh" />
 
           <Box>
             <FormControl as="form" onSubmit={handleSignIn}>
@@ -138,7 +93,6 @@ export default function Login() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
               />
               <FormHelperText></FormHelperText>
               <FormLabel>Password</FormLabel>
@@ -148,27 +102,8 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              {error && (
-                <Alert
-                  status="error"
-                  style={{
-                    borderRadius: "10px",
-                    marginTop: "10px",
-                    marginBottom: "10px",
-                  }}
-                >
-                  <AlertIcon />
-                  <AlertTitle>{error}</AlertTitle>
-                </Alert>
-              )}
-              <Button
-                type="submit"
-                mt={4}
-                colorScheme="teal"
-                isLoading={loading}
-                loadingText={"Logging In"}
-              >
-                Log In
+              <Button type="submit" mt={4} colorScheme="teal">
+                Submit
               </Button>
             </FormControl>
           </Box>

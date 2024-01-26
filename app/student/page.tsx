@@ -1,12 +1,11 @@
 "use client";
 import { Box, Grid, GridItem, Show, Stack, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TypeSelector from "../components/TypeSelector";
 import FloorList, { Floor } from "../components/FloorList";
 import GameGrid from "../components/GameGrid";
 import NavBar from "../components/NavBar";
 import DateSelector from "../components/DateSelector";
-import { useRouter } from "next/navigation";
 
 const Page = () => {
   const user = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -15,19 +14,6 @@ const Page = () => {
     "all"
   );
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-
-  const router = useRouter();
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const user = JSON.parse(localStorage.getItem("userData") || "{}");
-
-      if (user.priority != 1) {
-        localStorage.clear();
-        router.push("/");
-      }
-    }
-  });
-
   return (
     <>
       <Grid

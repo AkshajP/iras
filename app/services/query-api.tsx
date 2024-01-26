@@ -1,13 +1,13 @@
 import supabase from "./client";
-import {useEffect,useState} from "react";
+import { useEffect, useState } from "react";
 
-function queryApi(tablename:string) {
-    const [data, setData] = useState<any[]>([]);
-    const [error, setError] = useState<any>(null);
+function QueryApi(tablename: string) {
+  const [data, setData] = useState<any[]>([]);
+  const [error, setError] = useState<any>(null);
 
-    const fetchData = async () => {
+  const fetchData = async () => {
     try {
-      const { data, error } = await supabase.from(tablename).select('*');
+      const { data, error } = await supabase.from(tablename).select("*");
       if (data) {
         setData(data || []);
       }
@@ -20,10 +20,10 @@ function queryApi(tablename:string) {
     }
   };
 
-    useEffect(() => {
-        fetchData();
-    }, [tablename]);
-    return { data, error };
+  useEffect(() => {
+    fetchData();
+  }, [tablename]);
+  return { data, error };
 }
 
-export default queryApi
+export default QueryApi;

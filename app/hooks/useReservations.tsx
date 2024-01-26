@@ -12,7 +12,7 @@ export interface Reservation {
 }
 
 const useReservations = (selectedDate: Date, room_number: string) => {
-  const fetchReservationData = fetchReservations(selectedDate, room_number);
+  const fetchReservationData = FetchReservations(selectedDate, room_number);
   const reservations = fetchReservationData.data.map((reservationData) => {
     const {
       rid,
@@ -41,7 +41,7 @@ const useReservations = (selectedDate: Date, room_number: string) => {
 
 export default useReservations;
 
-function fetchReservations(selectedDate: Date, room_number: string) {
+function FetchReservations(selectedDate: Date, room_number: string) {
   const [data, setData] = useState<any[]>([]);
   const [error, setError] = useState<any>(null);
 

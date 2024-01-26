@@ -18,7 +18,7 @@ interface ReservationBlocksProps {
   change: number;
 }
 
-const fetchReservations = async (selectedDate: Date, roomNumber: string) => {
+const FetchReservations = async (selectedDate: Date, roomNumber: string) => {
   const formattedDate = selectedDate.toISOString().split("T")[0];
   try {
     const { data, error } = await supabase
@@ -44,7 +44,7 @@ const useReservations = (
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await fetchReservations(selectedDate, roomNumber);
+      const { data, error } = await FetchReservations(selectedDate, roomNumber);
       setReservations(
         data.map((reservationData) => ({
           ...reservationData,

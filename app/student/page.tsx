@@ -7,7 +7,7 @@ import GameGrid from "../components/GameGrid";
 import NavBar from "../components/NavBar";
 import DateSelector from "../components/DateSelector";
 
-const studentHomepage = () => {
+const Page = () => {
   const user = JSON.parse(localStorage.getItem("userData") || "{}");
   const [selectedFloor, setSelectedFloor] = useState<Floor | null>(null);
   const [selectedType, setSelectedType] = useState<"all" | "ca" | "classroom">(
@@ -59,4 +59,4 @@ const studentHomepage = () => {
   );
 };
 
-export default studentHomepage;
+export default Page;

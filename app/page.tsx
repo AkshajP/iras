@@ -1,10 +1,24 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
-  return (
-    <main>
-      <div>home page</div>
-    </main>
-  );
+  const router = useRouter();
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const user = JSON.parse(localStorage.getItem("userData") || "{}");
+
+      if (user.priority === 1) {
+        router.push("/student");
+      } else if (user.priority === 2) {
+        router.push("/teacher");
+      } else if (user.priority === 3) {
+        router.push("/admin");
+      } else {
+        router.push("/auth/login");
+      }
+    }
+  });
+
+  return <></>;
 }

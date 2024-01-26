@@ -33,7 +33,7 @@ const FetchReservations = async (selectedDate: Date, roomNumber: string) => {
     return { data: [], error };
   }
 };
-
+const user = JSON.parse(localStorage.getItem("userData") || "{}");
 const useReservations = (
   selectedDate: Date,
   roomNumber: string,
@@ -81,10 +81,6 @@ const ReservationBlocks = ({
     change
   );
 
-  useEffect(() => {
-    console.log("change");
-  }, [change]);
-
   const renderReservationBlocks = () => {
     if (error) {
       return <Text>Error fetching reservations</Text>;
@@ -92,9 +88,23 @@ const ReservationBlocks = ({
 
     return timeslotDescriptions.map((description, index) => {
       const timeslot = index + 1;
-      const hasReservation = reservations.some(
+      const reservation = reservations.find(
         (reservation) => reservation.timeslot === timeslot
       );
+      let color;
+
+      if (reservation) {
+        if (user.priority > reservation.occupier_priority) {
+          // My priority is more, overbookable slots
+          color = "yellow.100";
+        } else {
+          // My priority is less or equal, can't change this slot
+          color = "gray.600";
+        }
+      } else {
+        // Slot is available
+        color = "green.400";
+      }
 
       return (
         <Box display="flex" flexDirection="row" key={timeslot}>
@@ -104,7 +114,7 @@ const ReservationBlocks = ({
             key={timeslot}
             w="20px"
             h="20px"
-            background={hasReservation ? "gray.600" : "green.400"}
+            background={color}
             padding={2}
             margin={1}
           />

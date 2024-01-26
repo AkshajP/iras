@@ -34,15 +34,12 @@ export default function Login() {
   const handleSignIn = async (event: any) => {
     event.preventDefault();
     setLoading(true);
-    console.log(email, password);
 
     // Sign in with Supabase
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-
-    console.log(data, error);
 
     if (error) {
       console.error("Error signing in:", error.message);
@@ -81,7 +78,10 @@ export default function Login() {
     } else if (studentData) {
       // User is a student
       localStorage.setItem("userRole", "student");
-      localStorage.setItem("userData", JSON.stringify(studentData));
+
+      const sData = { ...studentData };
+      sData.id = studentData.usn; // Assuming `usn` is the property you want to use for the `id`
+      localStorage.setItem("userData", JSON.stringify(sData));
       setLoading(false);
       router.push("/student");
     } else if (adminData) {

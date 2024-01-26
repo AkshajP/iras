@@ -69,6 +69,6 @@ function FetchReservations(selectedDate: Date, room_number: string) {
   useEffect(() => {
     fetchData();
   }, [selectedDate]);
-  // console.log(data);
+
   return { data, error };
 }

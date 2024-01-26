@@ -1,7 +1,6 @@
 import { Box, SimpleGrid, Text } from "@chakra-ui/react";
 import UseRoom, { RoomClass } from "../hooks/useRoom";
 import useType from "../hooks/useType";
-import { User } from "../services/AuthContext";
 import { Floor } from "./FloorList";
 import GameCard from "./GameCard";
 
@@ -21,7 +20,7 @@ const GameGrid = ({
   const { rooms: roomsByFloor, error: errorByFloor } = UseRoom(selectedFloor);
   const { rooms: roomsByType, error: errorByType } = useType(selectedType);
   const finalrooms = mergeRooms(roomsByFloor, roomsByType);
-  console.log(finalrooms);
+
   return (
     <>
       {(errorByFloor || errorByType) && (

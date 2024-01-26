@@ -1,7 +1,6 @@
 import { Card, CardBody, Heading } from "@chakra-ui/react";
 import { useState } from "react";
 import { RoomClass } from "../hooks/useRoom";
-import { User } from "../services/AuthContext";
 import CardModal from "./CardModal";
 import ReservationBlocks from "./ReservationBlocks";
 import { useRouter } from "next/navigation";
@@ -9,7 +8,7 @@ import { useRouter } from "next/navigation";
 interface RoomProps {
   room: RoomClass;
   selectedDate: Date;
-  user: User | null;
+  user: any;
 }
 
 const GameCard = ({ room, selectedDate, user }: RoomProps) => {
@@ -18,7 +17,6 @@ const GameCard = ({ room, selectedDate, user }: RoomProps) => {
   const router = useRouter();
 
   const handleClick = () => {
-    console.log("clicked");
     setIsModalOpen(true);
     //IMPORT THE MODAL AND PASS PARAMETERS
   };

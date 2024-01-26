@@ -13,17 +13,10 @@ import {
   VStack,
   HStack,
   Text,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-  AlertProps,
-  CloseButton,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import useReservations from "../hooks/useReservations";
 import { RoomClass } from "../hooks/useRoom";
-import { User } from "../services/AuthContext";
 import { Reserve } from "../services/Reserve";
 import { useRouter } from "next/navigation";
 
@@ -33,7 +26,7 @@ interface CardModalProps {
   change: number;
   room: RoomClass;
   date: Date;
-  user: User | null;
+  user: any;
 }
 
 const CardModal: React.FC<CardModalProps> = ({
@@ -96,7 +89,7 @@ const CardModal: React.FC<CardModalProps> = ({
       );
       const newchange = change + 1;
       onChange(newchange);
-      console.log("newchange = ", newchange);
+
       alert("reservation successful");
       renderCheckBoxes();
     } catch (error) {
@@ -108,18 +101,39 @@ const CardModal: React.FC<CardModalProps> = ({
 
   const renderCheckBoxes = () => {
     return timeslots.map((timeslot) => {
-      const hasReservation = reservations.Reservation.some(
+      const reservation = reservations.Reservation.find(
         (reservation) => reservation.timeslot === timeslot
       );
+      const isBookable =
+        !reservation || user.priority > reservation.occupier_priority;
+      const isOverBookable =
+        reservation && user.priority > reservation.occupier_priority;
       return (
-        <HStack>
+        <HStack key={timeslot}>
           <Checkbox
-            key={timeslot}
             isChecked={selectedSlots.includes(timeslot)}
-            isDisabled={hasReservation ? true : false}
+            isDisabled={!isBookable}
             onChange={() => handleCheckboxChange(timeslot)}
           ></Checkbox>
-          <Text>{timeslotDescription[timeslot - 1]}</Text>
+          <Text
+            color={
+              isOverBookable
+                ? "yellow.100"
+                : isBookable
+                  ? "green.400"
+                  : "gray.400"
+            }
+          >
+            {timeslotDescription[timeslot - 1]}
+            {reservation && isOverBookable
+              ? " (Booked reason: " + reservation.reason + ")"
+              : ""}
+            {reservation && reservation.occupier_id === user.id
+              ? " (Already booked by you)"
+              : reservation
+                ? ""
+                : ""}
+          </Text>
         </HStack>
       );
     });

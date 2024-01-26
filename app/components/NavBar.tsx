@@ -51,7 +51,9 @@ const NavBar: React.FC = () => {
   );
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [reservations, setReservations] = useState<Reservation[]>([]);
-  const user = JSON.parse(localStorage.getItem("userData") || "{}");
+  const user = JSON.parse(
+    (typeof window !== "undefined" && localStorage.getItem("userData")) || "{}"
+  );
 
   useEffect(() => {
     const fetchTeachers = async () => {
@@ -100,7 +102,7 @@ const NavBar: React.FC = () => {
 
   const handleLogout = async () => {
     setLoading(true);
-    localStorage.clear();
+    if (typeof window !== "undefined") localStorage.clear();
     const { error } = await supabase.auth.signOut();
     router.push("/auth/login");
     setLoading(false);

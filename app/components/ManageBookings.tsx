@@ -19,7 +19,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { useTime } from "framer-motion";
 
 const ManageBookings = () => {
-  const user = JSON.parse(localStorage.getItem("userData") || "{}");
+  const user = JSON.parse(typeof window !== "undefined" && localStorage.getItem("userData") || "{}");
   const [bookings, setBookings] = useState<any>([]);
 
   const [deleting, setDeleting] = useState(false);

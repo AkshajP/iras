@@ -30,7 +30,7 @@ const FloorList: React.FC<FloorListProps> = ({
   //   text,
   // }));
   const router = useRouter();
-  const user = JSON.parse(localStorage.getItem("userData") || "{}");
+  const user = JSON.parse(typeof window !== "undefined" && localStorage.getItem("userData") || "{}");
 
   const floors: Floor[] = [
     { floor: null, text: "All Floors" },

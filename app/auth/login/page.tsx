@@ -69,7 +69,7 @@ export default function Login() {
       .single();
 
     // Determine the user role and store data in localStorage
-    if (teacherData) {
+    if (teacherData && typeof window !== "undefined") {
       // User is a teacher
       localStorage.setItem("userRole", "teacher");
       localStorage.setItem("userData", JSON.stringify(teacherData));
@@ -95,13 +95,16 @@ export default function Login() {
 
       setError("User not found");
       setLoading(false);
-      localStorage.clear();
+      if (typeof window !== "undefined") localStorage.clear();
     }
   };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const user = JSON.parse(localStorage.getItem("userData") || "{}");
+      const user = JSON.parse(
+        (typeof window !== "undefined" && localStorage.getItem("userData")) ||
+          "{}"
+      );
 
       if (user.priority === 1) {
         router.push("/student");

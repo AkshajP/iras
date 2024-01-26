@@ -9,7 +9,9 @@ import DateSelector from "../components/DateSelector";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const user = JSON.parse(localStorage.getItem("userData") || "{}");
+  const user = JSON.parse(
+    (typeof window !== "undefined" && localStorage.getItem("userData")) || "{}"
+  );
   const [selectedFloor, setSelectedFloor] = useState<Floor | null>(null);
   const [selectedType, setSelectedType] = useState<"all" | "ca" | "classroom">(
     "all"
@@ -19,9 +21,12 @@ const Page = () => {
   const router = useRouter();
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const user = JSON.parse(localStorage.getItem("userData") || "{}");
+      const user = JSON.parse(
+        (typeof window !== "undefined" && localStorage.getItem("userData")) ||
+          "{}"
+      );
 
-      if (user.priority != 2) {
+      if (user.priority != 2 && typeof window !== "undefined") {
         localStorage.clear();
         router.push("/");
       }

@@ -33,7 +33,9 @@ const FetchReservations = async (selectedDate: Date, roomNumber: string) => {
     return { data: [], error };
   }
 };
-const user = JSON.parse(localStorage.getItem("userData") || "{}");
+const user = JSON.parse(
+  (typeof window !== "undefined" && localStorage.getItem("userData")) || "{}"
+);
 const useReservations = (
   selectedDate: Date,
   roomNumber: string,

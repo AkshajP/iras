@@ -148,11 +148,12 @@ const NavBar: React.FC = () => {
           </MenuList>
         </Menu>
         <Button
-          onClick={() =>
-            user.priority === 1
-              ? router.push("student/manage")
-              : router.push("teacher/manage")
-          }
+          onClick={() => {
+            if (user.priority == 1) router.push("student/manage");
+            else if (user.priority == 2) router.push("teacher/manage");
+            else if (user.priority == 3)
+              router.push("admin/manage/reservations");
+          }}
         >
           My reservations
         </Button>

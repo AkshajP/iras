@@ -2,17 +2,21 @@
 import { Box, Grid, GridItem, Show, Stack, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import TypeSelector from "../components/TypeSelector";
-import FloorList, { Floor } from "../components/FloorList";
+import FloorList, { Floor } from "../components/AdminList";
 import GameGrid from "../components/GameGrid";
 import NavBar from "../components/NavBar";
 import DateSelector from "../components/DateSelector";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
-  //path protection
   const user = JSON.parse(
     (typeof window !== "undefined" && localStorage.getItem("userData")) || "{}"
   );
+  const [selectedFloor, setSelectedFloor] = useState<Floor | null>(null);
+  const [selectedType, setSelectedType] = useState<"all" | "ca" | "classroom">(
+    "all"
+  );
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   const router = useRouter();
   useEffect(() => {
@@ -22,18 +26,12 @@ const Page = () => {
           "{}"
       );
 
-      if (user.priority != 1 && typeof window !== "undefined") {
+      if (user.priority != 3 && typeof window !== "undefined") {
         localStorage.clear();
         router.push("/");
       }
     }
   });
-
-  const [selectedFloor, setSelectedFloor] = useState<Floor | null>(null);
-  const [selectedType, setSelectedType] = useState<"all" | "ca" | "classroom">(
-    "all"
-  );
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   return (
     <>

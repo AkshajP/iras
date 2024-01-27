@@ -12,19 +12,26 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
-  AlertDescription,
-  useTimeout,
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { useTime } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const ManageBookings = () => {
-  const user = JSON.parse(typeof window !== "undefined" && localStorage.getItem("userData") || "{}");
+  const router = useRouter();
+  const user = JSON.parse(
+    (typeof window !== "undefined" && localStorage.getItem("userData")) || "{}"
+  );
   const [bookings, setBookings] = useState<any>([]);
 
   const [deleting, setDeleting] = useState(false);
 
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/auth/login");
+    }
+  }, [user]);
 
   useEffect(() => {
     setTimeout(() => {

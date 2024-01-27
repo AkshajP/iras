@@ -80,7 +80,7 @@ const AdminFloorList: React.FC<FloorListProps> = ({
               onClick={setTT}
               colorScheme="purple"
             >
-              Set TT
+              Set Next Day TT
             </Button>
           </ListItem>
           <ListItem marginLeft={10} paddingY={2}>
@@ -91,6 +91,16 @@ const AdminFloorList: React.FC<FloorListProps> = ({
               colorScheme="purple"
             >
               Manage Rooms
+            </Button>
+          </ListItem>
+          <ListItem marginLeft={10} paddingY={2}>
+            <Button
+              width={150}
+              fontSize="lg"
+              onClick={() => router.push("/admin/manage/timetable")}
+              colorScheme="purple"
+            >
+              Manage TT
             </Button>
           </ListItem>
 

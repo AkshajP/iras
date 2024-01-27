@@ -132,7 +132,7 @@ const NavBar: React.FC = () => {
         <Image src={rvlogo} width={60} alt="logo" height={60} />
         <Menu>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-            View Teacher Reservations
+            Find Teacher By Reservation
           </MenuButton>
           <MenuList
             style={{ overflowY: "scroll", maxHeight: "500px", width: "100%" }}

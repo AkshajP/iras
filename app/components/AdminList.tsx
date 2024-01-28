@@ -103,6 +103,16 @@ const AdminFloorList: React.FC<FloorListProps> = ({
               Manage TT
             </Button>
           </ListItem>
+          <ListItem marginLeft={10} paddingY={2}>
+            <Button
+              width={150}
+              fontSize="lg"
+              onClick={() => router.push("/admin/manage/teachers")}
+              colorScheme="purple"
+            >
+              Manage Teachers
+            </Button>
+          </ListItem>
 
           {floors.map((floor) => (
             <ListItem marginLeft={10} paddingY={2} key={floor.floor}>

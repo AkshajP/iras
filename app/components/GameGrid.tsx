@@ -6,7 +6,7 @@ import GameCard from "./GameCard";
 
 interface GameGridProps {
   selectedFloor: Floor | null;
-  selectedType: "all" | "ca" | "classroom";
+  selectedType: "all" | "ca" | "classroom" | "lab"; //ca = common_area
   selectedDate: Date;
   user: any | null;
 }

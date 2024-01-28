@@ -13,7 +13,6 @@ import {
   List,
   ListItem,
   Table,
-  TableCaption,
   Thead,
   Tbody,
   Tr,
@@ -33,8 +32,6 @@ import {
   ModalCloseButton,
   FormControl,
   FormLabel,
-  Input,
-  Checkbox,
   Menu,
   MenuButton,
   MenuList,
@@ -87,24 +84,28 @@ export default function ManageTT() {
   }, [shouldRefetch]);
 
   const handleEntryDelete = async (entry: any) => {
-    console.log("Room to be deleted:", entry);
     try {
-      await supabase
+      const { data, error } = await supabase
         .from("timetable")
         .delete()
         .eq("timetable_id", entry.timetable_id);
-
-      setTimetable((timetableEntries: any) =>
-        timetableEntries.filter(
-          (entry: any) => entry.timetable_id !== entry.timetable_id
-        )
-      );
-      setShouldRefetch(true);
-      //setDeleting(false);
-      //setMessage("Booking deleted successfully");
+      if (error) {
+        setMessage("Error deleting Timetable entry:" + error);
+        setMessageType("error");
+      } else {
+        setTimetable((timetableEntries: any) =>
+          timetableEntries.filter(
+            (entry: any) => entry.timetable_id !== entry.timetable_id
+          )
+        );
+        setShouldRefetch(true);
+        setMessage("Timetable entry deleted successfully:");
+        setMessageType("success");
+      }
     } catch (error: any) {
       console.error("Error deleting Timetable entry:", error.message);
-      //setDeleting(false);
+      setMessage("Error deleting Timetable entry:" + error.message);
+      setMessageType("error");
     }
   };
 
@@ -205,7 +206,9 @@ export default function ManageTT() {
   );
   const [selectedClass, setSelectedClass] = useState<string | null>(null);
   const [message, setMessage] = useState("");
-
+  const [messageType, setMessageType] = useState<
+    "success" | "error" | "info" | "warning" | "loading" | undefined
+  >();
   useEffect(() => {
     setTimeout(() => {
       setMessage("");
@@ -214,46 +217,49 @@ export default function ManageTT() {
 
   const handleAdd = async () => {
     if (selectedClass && selectedDay && selectedTimeslot && selectedTeacherId) {
-      console.log(entryDetails);
-    }
-    try {
-      const { data, error } = await supabase.from("timetable").insert([
-        {
-          class: selectedClass,
-          day: selectedDay,
-          timeslot: selectedTimeslot,
-          id: selectedTeacherId,
-        },
-      ]);
+      try {
+        const { data, error } = await supabase.from("timetable").insert([
+          {
+            class: selectedClass,
+            day: selectedDay,
+            timeslot: selectedTimeslot,
+            id: selectedTeacherId,
+          },
+        ]);
 
-      if (error) {
+        if (error) {
+          setMessage("Error inserting Timetable entry:" + error.message);
+          setMessageType("error");
+        } else {
+          setMessage("Timetable entry inserted successfully");
+          setMessageType("success");
+
+          //get the timetable_id of the inserted entry
+          const { data, error } = await supabase
+            .from("timetable")
+            .select("*")
+            .eq("class", selectedClass)
+            .eq("day", selectedDay)
+            .eq("timeslot", selectedTimeslot)
+            .eq("id", selectedTeacherId);
+          data &&
+            setEntryDetails({
+              timetable_id: data[0].timetable_id,
+              class: data[0].class,
+              day: data[0].day,
+              timeslot: data[0].timeslot,
+              id: data[0].id,
+            });
+        }
+      } catch (error: any) {
+        console.error("Error:" + error.message);
         setMessage("Error inserting Timetable entry:" + error.message);
-      } else {
-        setMessage("Timetable entry inserted successfully:");
-        //get the timetable_id of the inserted entry
-        const { data, error } = await supabase
-          .from("timetable")
-          .select("*")
-          .eq("class", selectedClass)
-          .eq("day", selectedDay)
-          .eq("timeslot", selectedTimeslot)
-          .eq("id", selectedTeacherId);
-        data &&
-          setEntryDetails({
-            timetable_id: data[0].timetable_id,
-            class: data[0].class,
-            day: data[0].day,
-            timeslot: data[0].timeslot,
-            id: data[0].id,
-          });
+        setMessageType("error");
       }
-    } catch (error: any) {
-      console.error("Error:" + error.message);
     }
     onClose();
   };
   useEffect(() => {
-    console.log(entryDetails);
     if (entryDetails) setTimetable((prevTT) => [...prevTT, entryDetails]);
     setSelectedClass(null);
     setSelectedDay(null);
@@ -265,7 +271,7 @@ export default function ManageTT() {
     <>
       {message && (
         <Alert
-          status="success"
+          status={messageType}
           style={{
             position: "fixed",
             top: "5%",
@@ -273,7 +279,7 @@ export default function ManageTT() {
             transform: "translateX(-50%)",
             maxWidth: "400px",
             borderRadius: "10px",
-            backgroundColor: "#48BB78",
+            backgroundColor: messageType === "success" ? "#48BB78" : "#9B2C2C", // CHANGE THIS
           }}
         >
           <AlertIcon />
@@ -315,12 +321,48 @@ export default function ManageTT() {
               <Table variant="simple">
                 <Thead>
                   <Tr>
-                    <Th>Entry ID</Th>
-                    <Th>Class</Th>
-                    <Th>Day</Th>
-                    <Th>Timeslot</Th>
-                    <Th>Teacher</Th>
-                    <Th>Action</Th>
+                    <Th
+                      fontWeight="bold"
+                      fontSize="lg"
+                      textTransform="capitalize"
+                    >
+                      Entry ID
+                    </Th>
+                    <Th
+                      fontWeight="bold"
+                      fontSize="lg"
+                      textTransform="capitalize"
+                    >
+                      Class
+                    </Th>
+                    <Th
+                      fontWeight="bold"
+                      fontSize="lg"
+                      textTransform="capitalize"
+                    >
+                      Day
+                    </Th>
+                    <Th
+                      fontWeight="bold"
+                      fontSize="lg"
+                      textTransform="capitalize"
+                    >
+                      Timeslot
+                    </Th>
+                    <Th
+                      fontWeight="bold"
+                      fontSize="lg"
+                      textTransform="capitalize"
+                    >
+                      Teacher
+                    </Th>
+                    <Th
+                      fontWeight="bold"
+                      fontSize="lg"
+                      textTransform="capitalize"
+                    >
+                      Action
+                    </Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -431,7 +473,7 @@ export default function ManageTT() {
                         const selectedTeacher = teachers?.find(
                           (teacher) => teacher.name === selectedTeacherName
                         );
-                        console.log(selectedTeacher?.id);
+
                         setSelectedTeacherId(selectedTeacher?.id || "");
                       }}
                     ></FilterableDropdown>

@@ -30,9 +30,9 @@ const Page = () => {
   });
 
   const [selectedFloor, setSelectedFloor] = useState<Floor | null>(null);
-  const [selectedType, setSelectedType] = useState<"all" | "ca" | "classroom">(
-    "all"
-  );
+  const [selectedType, setSelectedType] = useState<
+    "all" | "ca" | "classroom" | "lab"
+  >("all");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   return (
@@ -57,9 +57,9 @@ const Page = () => {
         <GridItem area="main" marginRight={10} alignContent="space-evenly">
           <Stack spacing={4} direction="row">
             <TypeSelector
-              onSelectType={(selectedType: "all" | "ca" | "classroom") =>
-                setSelectedType(selectedType)
-              }
+              onSelectType={(
+                selectedType: "all" | "ca" | "classroom" | "lab"
+              ) => setSelectedType(selectedType)}
             />
             <DateSelector
               onSelectDate={(selectedDate: Date) =>

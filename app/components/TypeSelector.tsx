@@ -1,28 +1,31 @@
-import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
-import { useState } from 'react';
-import {BsChevronDown} from 'react-icons/bs'
+import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { useState } from "react";
+import { BsChevronDown } from "react-icons/bs";
 
 interface TypeSelectorProps {
-  onSelectType: (selectedType: 'all' | 'ca' | 'classroom') => void;
+  onSelectType: (selectedType: "all" | "ca" | "classroom" | "lab") => void;
 }
 
 const TypeSelector: React.FC<TypeSelectorProps> = ({ onSelectType }) => {
-  const [selectedTitle, setSelectedTitle] = useState('Choose Type');
+  const [selectedTitle, setSelectedTitle] = useState("Choose Type");
 
-  const handleSelectType = (type: 'all' | 'ca' | 'classroom') => {
-    let title = '';
+  const handleSelectType = (type: "all" | "ca" | "classroom" | "lab") => {
+    let title = "";
     switch (type) {
-      case 'all':
-        title = 'All';
+      case "all":
+        title = "All";
         break;
-      case 'ca':
-        title = 'Common Area';
+      case "ca":
+        title = "Common Area";
         break;
-      case 'classroom':
-        title = 'Classroom';
+      case "classroom":
+        title = "Classroom";
+        break;
+      case "lab":
+        title = "Lab";
         break;
       default:
-        title = 'Choose Type';
+        title = "Choose Type";
     }
     setSelectedTitle(title);
     onSelectType(type);
@@ -34,14 +37,17 @@ const TypeSelector: React.FC<TypeSelectorProps> = ({ onSelectType }) => {
         {selectedTitle}
       </MenuButton>
       <MenuList>
-        <MenuItem onClick={() => handleSelectType('all')} key="all">
+        <MenuItem onClick={() => handleSelectType("all")} key="all">
           All
         </MenuItem>
-        <MenuItem onClick={() => handleSelectType('ca')} key="ca">
+        <MenuItem onClick={() => handleSelectType("ca")} key="ca">
           Common Area
         </MenuItem>
-        <MenuItem onClick={() => handleSelectType('classroom')} key="classroom">
+        <MenuItem onClick={() => handleSelectType("classroom")} key="classroom">
           Classroom
+        </MenuItem>
+        <MenuItem onClick={() => handleSelectType("lab")} key="lab">
+          Lab
         </MenuItem>
       </MenuList>
     </Menu>

@@ -1,9 +1,9 @@
 "use client";
-import ManageBookings from "@/app/components/ManageReservations";
+import ManageTeachers from "@/app/components/ManageTeachers";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-export default function page() {
+function page() {
   const router = useRouter();
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -18,5 +18,11 @@ export default function page() {
       }
     }
   });
-  return <ManageBookings />;
+  return (
+    <div>
+      <ManageTeachers />
+    </div>
+  );
 }
+
+export default page;

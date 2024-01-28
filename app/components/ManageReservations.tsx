@@ -13,8 +13,13 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
+  Grid,
+  GridItem,
+  List,
+  ListItem,
+  TableContainer,
 } from "@chakra-ui/react";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { ChevronLeftIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/navigation";
 
 const ManageBookings = () => {
@@ -39,13 +44,27 @@ const ManageBookings = () => {
     }, 3000);
   }, [message]);
 
+  const currentDate = new Date();
+  const formattedDate = () => {
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const day = String(currentDate.getDate()).padStart(2, "0");
+    const hours = String(currentDate.getHours()).padStart(2, "0");
+    const minutes = String(currentDate.getMinutes()).padStart(2, "0");
+    const seconds = String(currentDate.getSeconds()).padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}`;
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+    return [formattedDate, formattedTime];
+  };
+
   useEffect(() => {
     const fetchBookings = async () => {
       try {
         const { data, error } = await supabase
           .from("reservation")
           .select("*")
-          .eq("occupier_id", user?.id);
+          .eq("occupier_id", user?.id)
+          .gte("date", formattedDate()[0]);
 
         if (error) {
           console.error("Error fetching bookings:", error.message);
@@ -96,40 +115,109 @@ const ManageBookings = () => {
           <AlertTitle>{message}</AlertTitle>
         </Alert>
       )}
-      <Box p="4">
-        <h2>Your Bookings</h2>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Reservation ID</Th>
-              <Th>Date</Th>
-              <Th>Room Number</Th>
-              <Th>Timeslot</Th>
-              <Th>Reason</Th>
-              <Th>Action</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {bookings.map((booking: any) => (
-              <Tr key={booking.rid}>
-                <Td>{booking.rid}</Td>
-                <Td>{booking.date}</Td>
-                <Td>{booking.room_no}</Td>
-                <Td>{booking.timeslot}</Td>
-                <Td>{booking.reason}</Td>
-                <Td>
-                  <Button
-                    colorScheme="red"
-                    onClick={() => handleDeleteBooking(booking.rid)}
+
+      <Grid
+        templateAreas={{
+          base: `"nav nav" "main main"`,
+          lg: `"nav nav" "main main"`,
+        }}
+      >
+        <GridItem area="nav" marginTop={10} marginLeft={10}>
+          <List display="flex" flexDirection="row">
+            <ListItem marginRight={5}>
+              <Button
+                onClick={() => {
+                  if (user.priority == 3) {
+                    router.push("/admin");
+                  } else if (user.priority == 2) {
+                    router.push("/teacher");
+                  } else if (user.priority == 1) {
+                    router.push("/student");
+                  }
+                }}
+              >
+                <ChevronLeftIcon />
+                Back
+              </Button>
+            </ListItem>
+          </List>
+        </GridItem>
+        <GridItem area="main" marginRight={10} alignContent="space-evenly">
+          <Alert status="info" maxWidth="90%" margin={10}>
+            <AlertIcon />
+            Your Reservations from today onwards are displayed here
+          </Alert>
+          <TableContainer margin={10} maxWidth="90%">
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th
+                    fontWeight="bold"
+                    fontSize="lg"
+                    textTransform="capitalize"
                   >
-                    <DeleteIcon />
-                  </Button>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </Box>
+                    Reservation ID
+                  </Th>
+                  <Th
+                    fontWeight="bold"
+                    fontSize="lg"
+                    textTransform="capitalize"
+                  >
+                    Date
+                  </Th>
+                  <Th
+                    fontWeight="bold"
+                    fontSize="lg"
+                    textTransform="capitalize"
+                  >
+                    Room Number
+                  </Th>
+                  <Th
+                    fontWeight="bold"
+                    fontSize="lg"
+                    textTransform="capitalize"
+                  >
+                    Timeslot
+                  </Th>
+                  <Th
+                    fontWeight="bold"
+                    fontSize="lg"
+                    textTransform="capitalize"
+                  >
+                    Reason
+                  </Th>
+                  <Th
+                    fontWeight="bold"
+                    fontSize="lg"
+                    textTransform="capitalize"
+                  >
+                    Action
+                  </Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {bookings.map((booking: any) => (
+                  <Tr key={booking.rid}>
+                    <Td>{booking.rid}</Td>
+                    <Td>{booking.date}</Td>
+                    <Td>{booking.room_no}</Td>
+                    <Td>{booking.timeslot}</Td>
+                    <Td>{booking.reason}</Td>
+                    <Td>
+                      <Button
+                        colorScheme="red"
+                        onClick={() => handleDeleteBooking(booking.rid)}
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </GridItem>
+      </Grid>
     </>
   );
 };

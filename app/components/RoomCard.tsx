@@ -11,14 +11,13 @@ interface RoomProps {
   user: any;
 }
 
-const GameCard = ({ room, selectedDate, user }: RoomProps) => {
+const RoomCard = ({ room, selectedDate, user }: RoomProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [change, setChange] = useState(0);
   const router = useRouter();
 
   const handleClick = () => {
     setIsModalOpen(true);
-    //IMPORT THE MODAL AND PASS PARAMETERS
   };
 
   const handleModalClose = () => {
@@ -55,7 +54,4 @@ const GameCard = ({ room, selectedDate, user }: RoomProps) => {
   );
 };
 
-//
-//height='200x' width='400px'
-
-export default GameCard;
+export default RoomCard;

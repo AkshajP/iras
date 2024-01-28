@@ -2,21 +2,21 @@ import { Box, SimpleGrid, Text } from "@chakra-ui/react";
 import UseRoom, { RoomClass } from "../hooks/useRoom";
 import useType from "../hooks/useType";
 import { Floor } from "./FloorList";
-import GameCard from "./GameCard";
+import RoomCard from "./RoomCard";
 
-interface GameGridProps {
+interface MainGridProps {
   selectedFloor: Floor | null;
   selectedType: "all" | "ca" | "classroom" | "lab"; //ca = common_area
   selectedDate: Date;
   user: any | null;
 }
 
-const GameGrid = ({
+const MainGrid = ({
   selectedFloor,
   selectedType,
   selectedDate,
   user,
-}: GameGridProps) => {
+}: MainGridProps) => {
   const { rooms: roomsByFloor, error: errorByFloor } = UseRoom(selectedFloor);
   const { rooms: roomsByType, error: errorByType } = useType(selectedType);
   const finalrooms = mergeRooms(roomsByFloor, roomsByType);
@@ -29,7 +29,7 @@ const GameGrid = ({
       <SimpleGrid columns={3} spacing={10}>
         {finalrooms?.map((room) => (
           <Box key={room.room_number} width="100%" height="100%">
-            <GameCard
+            <RoomCard
               user={user}
               key={room.room_number}
               room={room}
@@ -57,4 +57,4 @@ const mergeRooms = (
   return intersectedRooms;
 };
 
-export default GameGrid;
+export default MainGrid;

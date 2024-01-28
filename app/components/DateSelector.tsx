@@ -12,7 +12,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({ onSelectDate }) => {
   const generateDateOptions = () => {
     const dateOptions = [];
 
-    for (let i = 0; i < 28; i++) {
+    for (let i = 0; i < 7; i++) {
       const nextDate = new Date();
       nextDate.setDate(currentDate.getDate() + i);
       dateOptions.push(nextDate);
@@ -32,13 +32,13 @@ const DateSelector: React.FC<DateSelectorProps> = ({ onSelectDate }) => {
       <MenuButton as={Button} rightIcon={<BsChevronDown />}>
         {selectedDate ? selectedDate.toDateString() : "Select Date"}
       </MenuButton>
-      <MenuList style={{ overflowY: "scroll", maxHeight: "300px" }}>
+      <MenuList>
         {generateDateOptions().map((date) => (
           <MenuItem
-            key={date.toISOString().split("T")[0]}
+            key={date.toDateString()}
             onClick={() => handleDateSelect(date)}
           >
-            {date.toISOString().split("T")[0]}
+            {date.toDateString()}
           </MenuItem>
         ))}
       </MenuList>

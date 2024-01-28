@@ -3,7 +3,7 @@ import { Box, Grid, GridItem, Show, Stack, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import TypeSelector from "../components/TypeSelector";
 import FloorList, { Floor } from "../components/FloorList";
-import GameGrid from "../components/GameGrid";
+import MainGrid from "../components/MainGrid";
 import NavBar from "../components/NavBar";
 import DateSelector from "../components/DateSelector";
 import { useRouter } from "next/navigation";
@@ -68,7 +68,7 @@ const Page = () => {
             />
           </Stack>
           <Box padding={2} />
-          <GameGrid
+          <MainGrid
             user={user}
             selectedDate={selectedDate}
             selectedFloor={selectedFloor}

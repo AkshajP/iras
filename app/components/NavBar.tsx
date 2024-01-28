@@ -75,6 +75,19 @@ const NavBar: React.FC = () => {
     fetchTeachers();
   }, []);
 
+  const currentDate = new Date();
+  const formattedDate = () => {
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const day = String(currentDate.getDate()).padStart(2, "0");
+    const hours = String(currentDate.getHours()).padStart(2, "0");
+    const minutes = String(currentDate.getMinutes()).padStart(2, "0");
+    const seconds = String(currentDate.getSeconds()).padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}`;
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+    return [formattedDate, formattedTime];
+  };
+
   useEffect(() => {
     const fetchReservations = async () => {
       try {
@@ -82,7 +95,8 @@ const NavBar: React.FC = () => {
         const { data, error } = await supabase
           .from("reservation")
           .select("*")
-          .eq("occupier_id", selectedTeacherId);
+          .eq("occupier_id", selectedTeacherId)
+          .eq("date", formattedDate()[0]);
 
         if (error) {
           console.error("Error fetching reservations:", error.message);
@@ -117,6 +131,16 @@ const NavBar: React.FC = () => {
     setSelectedTeacherId(null);
     onClose();
   };
+
+  const timeslotDescription: string[] = [
+    "9:00 AM - 10:00 AM",
+    "10:00 AM - 11:00 AM",
+    "11:20 AM - 12:20 PM",
+    "12:20 PM - 1:20 PM",
+    "1:20 PM - 2:00 PM",
+    "2:00 PM - 3:00 PM",
+    "3:00 PM - 4:00 PM",
+  ];
 
   return (
     <HStack justifyContent="space-between" padding="10px">
@@ -170,29 +194,45 @@ const NavBar: React.FC = () => {
           Log Out
         </Button>
       </HStack>
-      <Modal isOpen={isOpen} onClose={handleCloseModal}>
+      <Modal isOpen={isOpen} onClose={handleCloseModal} size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Teacher Details</ModalHeader>
+          <ModalHeader>Teacher Details For Today</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {selectedTeacherId !== null && reservations.length > 0 ? (
               <Table variant="simple">
                 <Thead>
                   <Tr>
-                    <Th>Date</Th>
-                    <Th>Room Number</Th>
-                    <Th>Reason</Th>
-                    <Th>Timeslot</Th>
+                    <Th
+                      fontWeight="bold"
+                      fontSize="lg"
+                      textTransform="capitalize"
+                    >
+                      Room Number
+                    </Th>
+                    <Th
+                      fontWeight="bold"
+                      fontSize="lg"
+                      textTransform="capitalize"
+                    >
+                      Reason
+                    </Th>
+                    <Th
+                      fontWeight="bold"
+                      fontSize="lg"
+                      textTransform="capitalize"
+                    >
+                      Time
+                    </Th>
                   </Tr>
                 </Thead>
                 <Tbody>
                   {reservations.map((reservation) => (
                     <Tr key={reservation.id}>
-                      <Td>{reservation.date}</Td>
                       <Td>{reservation.room_no}</Td>
                       <Td>{reservation.reason}</Td>
-                      <Td>{reservation.timeslot}</Td>
+                      <Td>{timeslotDescription[reservation.timeslot - 1]}</Td>
                     </Tr>
                   ))}
                 </Tbody>

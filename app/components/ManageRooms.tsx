@@ -205,8 +205,8 @@ export default function ManageRooms() {
               <AlertTitle>
                 Each of these rooms are referenced by other tables. Do not
                 delete a room without knowledge. <br />
-                (For this project's purpose L991-L999 will be rooms having no
-                relation which can be deleted)
+                For this project&apos;s purpose L991-L999 will be rooms having
+                no relation which can be deleted
               </AlertTitle>
             </Alert>
             <TableContainer margin={10} maxWidth="90%">

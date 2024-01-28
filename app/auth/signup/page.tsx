@@ -24,7 +24,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
-export default function page() {
+export default function Page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);

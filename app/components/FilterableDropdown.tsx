@@ -49,11 +49,9 @@ const FilterableDropdown: React.FC<FilterableDropdownProps> = ({
           borderRadius="md"
           variant="filled"
         />
-        <InputRightElement
-          width="4.5rem"
-          pointerEvents="none"
-          children={<SearchIcon color="gray.500" />}
-        />
+        <InputRightElement width="4.5rem" pointerEvents="none">
+          <SearchIcon color="gray.500" />
+        </InputRightElement>
       </InputGroup>
       <Collapse in={isOpen}>
         <List

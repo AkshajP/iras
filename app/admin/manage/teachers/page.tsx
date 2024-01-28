@@ -3,7 +3,7 @@ import ManageTeachers from "@/app/components/ManageTeachers";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-function page() {
+function Page() {
   const router = useRouter();
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -25,4 +25,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

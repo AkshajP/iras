@@ -2,7 +2,7 @@
 import ManageBookings from "@/app/components/ManageReservations";
 import React from "react";
 
-const page = () => {
+const Page = () => {
   return (
     <>
       <ManageBookings />
@@ -10,4 +10,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

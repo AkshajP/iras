@@ -314,7 +314,7 @@ export default function ManageTT() {
               <AlertTitle>
                 Each of these timetable entries get set for current day in the
                 next week. <br />
-                Change only if there's a change in timetable.
+                Change only if there is a change in timetable.
               </AlertTitle>
             </Alert>
             <TableContainer margin={10}>

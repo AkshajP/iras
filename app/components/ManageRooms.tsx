@@ -1,13 +1,11 @@
 import { AddIcon, ChevronLeftIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
-  Box,
   Button,
   Grid,
   GridItem,
   List,
   ListItem,
   Table,
-  TableCaption,
   Thead,
   Tbody,
   Tr,
@@ -176,16 +174,45 @@ export default function ManageRooms() {
                 relation which can be deleted)
               </AlertTitle>
             </Alert>
-            <TableContainer margin={10}>
+            <TableContainer margin={10} maxWidth="70%">
               <Table variant="simple">
-                <TableCaption>Rooms Information</TableCaption>
                 <Thead>
                   <Tr>
-                    <Th>Room Number</Th>
-                    <Th>Class</Th>
-                    <Th>Floor</Th>
-                    <Th>Common Area</Th>
-                    <Th>Action</Th>
+                    <Th
+                      fontWeight="bold"
+                      fontSize="lg"
+                      textTransform="capitalize"
+                    >
+                      Room Number
+                    </Th>
+                    <Th
+                      fontWeight="bold"
+                      fontSize="lg"
+                      textTransform="capitalize"
+                    >
+                      Class
+                    </Th>
+                    <Th
+                      fontWeight="bold"
+                      fontSize="lg"
+                      textTransform="capitalize"
+                    >
+                      Floor
+                    </Th>
+                    <Th
+                      fontWeight="bold"
+                      fontSize="lg"
+                      textTransform="capitalize"
+                    >
+                      Common Area
+                    </Th>
+                    <Th
+                      fontWeight="bold"
+                      fontSize="lg"
+                      textTransform="capitalize"
+                    >
+                      Action
+                    </Th>
                   </Tr>
                 </Thead>
                 <Tbody>

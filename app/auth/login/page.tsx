@@ -174,6 +174,15 @@ export default function Login() {
                 Log In
               </Button>
             </FormControl>
+
+            <Button
+              type="button"
+              mt={4}
+              colorScheme="teal"
+              onClick={() => router.push("/auth/signup")}
+            >
+              Sign Up
+            </Button>
           </Box>
           <Box h="40px" />
         </VStack>

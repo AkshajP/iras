@@ -302,7 +302,7 @@ export default function ManageTT() {
             </ListItem>
             <ListItem marginRight={5}>
               <Button onClick={onOpen}>
-                Add Room <AddIcon margin={2} />
+                Add TimeTable Entry <AddIcon margin={2} />
               </Button>
             </ListItem>
           </List>
@@ -314,7 +314,10 @@ export default function ManageTT() {
               <AlertTitle>
                 Each of these timetable entries get set for current day in the
                 next week. <br />
-                Change only if there is a change in timetable.
+                Change only if there is a change in timetable. <br />
+                <br />
+                Any changes reflect after a week. If needed immidiate change,
+                overwrite Timetable reservations.
               </AlertTitle>
             </Alert>
             <TableContainer margin={10}>
@@ -397,7 +400,7 @@ export default function ManageTT() {
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>Modal Title</ModalHeader>
+                <ModalHeader>Add Timetable Entry</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <FormControl mb={4}>

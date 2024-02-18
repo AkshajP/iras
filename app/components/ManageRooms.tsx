@@ -275,7 +275,7 @@ export default function ManageRooms() {
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>Modal Title</ModalHeader>
+                <ModalHeader>Add Room Entry</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <FormControl mb={4}>

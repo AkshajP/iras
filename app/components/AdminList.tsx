@@ -56,12 +56,17 @@ const AdminFloorList: React.FC<FloorListProps> = ({
     }, 3000);
   }, [message]);
 
+  const nextWeekDate = new Date();
+  nextWeekDate.setDate(nextWeekDate.getDate() + 7);
+  const monthAbbreviation = nextWeekDate.toLocaleString("default", {
+    month: "short",
+  });
+  const displayDate = `${monthAbbreviation} ${nextWeekDate.getDate()}`;
+
   const setTT = async () => {
     let { data, error } = await supabase.rpc("SetTimetableReservations");
     if (error) setMessage(error.message);
     else {
-      const nextWeekDate = new Date();
-      nextWeekDate.setDate(nextWeekDate.getDate() + 7);
       setMessage(
         "Timetable Set Successfully for " +
           nextWeekDate.toISOString().split("T")[0]
@@ -80,7 +85,7 @@ const AdminFloorList: React.FC<FloorListProps> = ({
               onClick={setTT}
               colorScheme="purple"
             >
-              Set Next Day TT
+              Set {displayDate} TT
             </Button>
           </ListItem>
           <ListItem marginLeft={10} paddingY={2}>
@@ -106,11 +111,11 @@ const AdminFloorList: React.FC<FloorListProps> = ({
           <ListItem marginLeft={10} paddingY={2}>
             <Button
               width={150}
-              fontSize="lg"
+              fontSize="md"
               onClick={() => router.push("/admin/manage/teachers")}
               colorScheme="purple"
             >
-              Manage Teachers
+              Manage Faculty
             </Button>
           </ListItem>
 

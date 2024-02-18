@@ -58,30 +58,30 @@ function ManageTeachers() {
     }
   }, [shouldRefetch]);
 
-  const handleTeacherDelete = async (teacherDetails: any) => {
-    console.log("Teacher to be deleted:", teacherDetails);
-    try {
-      const { data, error } = await supabase
-        .from("teacher")
-        .delete()
-        .eq("id", teacherDetails.id);
-      if (error) {
-        setMessage("Error deleting Teacher:");
-        setMessageType("error");
-      } else {
-        setTeachers((prevRooms: any) =>
-          prevRooms.filter((teacher: any) => teacher.id !== teacherDetails.id)
-        );
-        //setDeleting(false);
-        setMessage("Teacher deleted successfully.");
-        setMessageType("success");
-        setShouldRefetch(true);
-      }
-    } catch (error: any) {
-      console.error("Error deleting Teacher:", error.message);
-      //setDeleting(false);
-    }
-  };
+  // const handleTeacherDelete = async (teacherDetails: any) => {
+  //   console.log("Teacher to be deleted:", teacherDetails);
+  //   try {
+  //     const { data, error } = await supabase
+  //       .from("teacher")
+  //       .delete()
+  //       .eq("id", teacherDetails.id);
+  //     if (error) {
+  //       setMessage("Error deleting Teacher:");
+  //       setMessageType("error");
+  //     } else {
+  //       setTeachers((prevRooms: any) =>
+  //         prevRooms.filter((teacher: any) => teacher.id !== teacherDetails.id)
+  //       );
+  //       //setDeleting(false);
+  //       setMessage("Teacher deleted successfully.");
+  //       setMessageType("success");
+  //       setShouldRefetch(true);
+  //     }
+  //   } catch (error: any) {
+  //     console.error("Error deleting Teacher:", error.message);
+  //     //setDeleting(false);
+  //   }
+  // };
 
   //MODAL HANDLING
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -195,12 +195,8 @@ function ManageTeachers() {
               <AlertIcon />
               <AlertTitle>
                 These teachers will be referenced by other tables. <br />
-                Do not delete without knowledge as this cannot be undone.
-                <br />
-                <br />
-                On deleting a teacher, all the timetable entries for that
-                teacher will also be deleted. Consider updating timetable after
-                operation.
+                No teacher can be deleted once entered to maintain data the
+                integrity and auditability of the system.
               </AlertTitle>
             </Alert>
             <TableContainer margin={10} maxWidth="90%">
@@ -235,13 +231,6 @@ function ManageTeachers() {
                     >
                       Email
                     </Th>
-                    <Th
-                      fontWeight="bold"
-                      fontSize="lg"
-                      textTransform="capitalize"
-                    >
-                      Action
-                    </Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -251,15 +240,6 @@ function ManageTeachers() {
                       <Td>{teacher.name}</Td>
                       <Td>{teacher.contact}</Td>
                       <Td>{teacher.email}</Td>
-                      <Td>
-                        <Button
-                          colorScheme="red"
-                          size="sm"
-                          onClick={() => handleTeacherDelete(teacher)}
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      </Td>
                     </Tr>
                   ))}
                 </Tbody>
@@ -269,7 +249,7 @@ function ManageTeachers() {
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>Modal Title</ModalHeader>
+                <ModalHeader>Add Teacher</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <FormControl mb={4}>
@@ -344,6 +324,14 @@ function ManageTeachers() {
                       }}
                     />
                   </FormControl>
+                  {!(idUniqueStatus && emailUniqueStatus) ? (
+                    <p>
+                      Red outlined fields are invalid. Please correct them
+                      before adding.
+                    </p>
+                  ) : (
+                    <></>
+                  )}
                 </ModalBody>
                 <ModalFooter>
                   <Button

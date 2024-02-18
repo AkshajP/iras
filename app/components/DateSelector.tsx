@@ -24,7 +24,6 @@ const DateSelector: React.FC<DateSelectorProps> = ({ onSelectDate }) => {
   const handleDateSelect = (date: Date) => {
     setSelectedDate(new Date(date));
     onSelectDate(date);
-    // You can perform additional actions here when a date is selected
   };
 
   return (

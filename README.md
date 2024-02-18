@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# IRAS (Institution Resource Allocation System)
 
-## Getting Started
+## DBMS Lab Mini Project (21CSL55)
 
-First, run the development server:
+Project partners:
+
+- Akshaj Pattanshetty (1RF21CS009) - Website development
+- Harsh Shivhare (1RF21CS047) - Data entry
+
+## Objective
+
+To maximise efficiency of booking of a room or common area in the college to reduce conflicts and increase transparency without too much dependency on the admin.
+
+## Project Dependencies
+
+The project needs Chakra-UI and Supabase libraries installed.
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Future Enhancements
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Proper Login System with magic link and password recovery
+- Admin room assignment capability
+- User notification system to inform of any changes
+- Responsiveness for mobile devices
+- File type support - so that admin can upload csv for setting timetable
 
-## Learn More
+## Setting up backend
 
-To learn more about Next.js, take a look at the following resources:
+Note that the following sql is **just for reference** and was auto generated. This does not show the foreign key constraints that exist in the database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```sql
+CREATE TABLE teacher (id text NOT NULL, name character varying NOT NULL, contact text, email character varying NOT NULL, priority smallint NOT NULL);
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+CREATE TABLE admin (id text NOT NULL, name character varying NOT NULL, contact text, email character varying NOT NULL, priority smallint NOT NULL);
 
-## Deploy on Vercel
+CREATE TABLE timetable (timetable_id bigint NOT NULL, class text NOT NULL, day text NOT NULL, id text NOT NULL, timeslot bigint NOT NULL);
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+CREATE TABLE reservation (rid bigint NOT NULL, date date NOT NULL, room_no text, reason character varying NOT NULL, occupier_id character varying NOT NULL, occupier_priority smallint, timeslot bigint);
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+CREATE TABLE student (usn text NOT NULL, name character varying NOT NULL, contact text, email character varying NOT NULL, priority smallint NOT NULL);
+
+CREATE TABLE time_slots (id bigint NOT NULL, start_time time without time zone NOT NULL, end_time time without time zone);
+
+CREATE TABLE rooms (room_number text NOT NULL, class text NOT NULL, floor smallint, common_area boolean, type smallint);
+```
+
+There exist the following sql functions in the supabase project as RPCs.
+
+RPC - check_email_exists
+
+```sql
+SELECT
+    (SELECT COUNT(*) FROM teacher WHERE email = $1) = 1 OR
+    (SELECT COUNT(*) FROM student WHERE email = $1) = 1 OR
+    (SELECT COUNT(*) FROM admin WHERE email = $1) = 1
+```
+
+RPC - SetTimetableReservations
+
+```sql
+INSERT INTO reservation (date, room_no, reason, occupier_id, occupier_priority, timeslot)
+SELECT CURRENT_DATE+7, r.room_number, ' Default Timetable Class', t.id, 2, t.timeslot
+FROM timetable t, rooms r
+WHERE t.class = r.class AND EXTRACT(DOW FROM (CURRENT_DATE))::text = t.day
+
+```
+
+**Please change the supabase ANON keys in services/client.tsx, they are committed to the repository and stored to not mess up the vercel hosting**
+
+First time working with Next.js.

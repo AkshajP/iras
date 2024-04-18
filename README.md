@@ -1,34 +1,32 @@
 # IRAS (Institution Resource Allocation System)
 
-## DBMS Lab Mini Project (21CSL55)
-
-Project partners:
-
-- Akshaj Pattanshetty (1RF21CS009) - Website development
-- Harsh Shivhare (1RF21CS047) - Data entry
-
 ## Objective
 
 To maximise efficiency of booking of a room or common area in the college to reduce conflicts and increase transparency without too much dependency on the admin.
 
+## Current fixes aimed:
+
+- [ ] Fix hydration error caused by `typeof == window` by managing role based access using supabase auth tokens instead of writing to local storage
+- [ ] Move all calls to server side rendering
+- [ ] Move keys to .env.local and setup repo accordingly
+- [ ] Remove redundant code in \<usertype\>/page
+
 ## Project Dependencies
 
-The project needs Chakra-UI and Supabase libraries installed.
+The project needs
 
-Run the development server:
+- Chakra-UI: @chakra-ui/react @chakra-ui/icons
+- react-icons/bs
+- Supabase
 
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+libraries for next js installed.
 
 ## Future Enhancements
 
 - Proper Login System with magic link and password recovery
+- Responsiveness for mobile devices
 - Admin room assignment capability
 - User notification system to inform of any changes
-- Responsiveness for mobile devices
 - File type support - so that admin can upload csv for setting timetable
 
 ## Setting up backend
